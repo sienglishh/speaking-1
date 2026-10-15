@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luyện Nghe Nói Tiếng Anh</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 420px;
+            text-align: center;
+        }
+        h2 { 
+            color: #333; 
+            font-size: 22px; 
+            margin-bottom: 10px; 
+        }
+        .progress { 
+            margin-bottom: 20px; 
+            font-weight: bold; 
+            color: #666; 
+            font-size: 14px; 
+        }
+        .instruction { 
+            color: #555; 
+            margin-bottom: 20px; 
+            font-size: 15px; 
+        }
+        .btn {
+            background: #007bff; 
+            color: white; 
+            border: none;
+            padding: 12px 20px; 
+            margin: 8px 0; 
+            width: 100%;
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-size: 16px; 
+            font-weight: bold;
+        }
+        .btn:hover { background: #0056b3; }
+        .btn-start { background: #17a2b8; font-size: 18px; }
+        .btn-start:hover { background: #138496; }
+        .btn-success { background: #28a745; }
+        .btn-success:hover { background: #218838; }
+        #mainControls { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>Luyện Nghe Tiếng Anh</h2>
+        
+        <div id="startScreen">
+            <p class="instruction">Bấm nút bên dưới để bắt đầu luyện tập nhé!</p>
+            <button class="btn btn-start" onclick="startApp()">▶️ Bắt đầu luyện tập</button>
+        </div>
+
+        <div id="mainControls">
+            <div class="progress" id="progress">Câu 1 / 26</div>
+            <div class="instruction">🎧 Lắng nghe câu hỏi và trả lời:</div>
+            
+            <button class="btn" onclick="playCurrentQuestion()">🔊 Nghe lại câu hỏi</button>
+            <button class="btn btn-success" onclick="nextQuestion()">➡️ Câu tiếp theo</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            "What do you usually do after you wake up?",
+            "What did you have for dinner yesterday?",
+            "Who do you talk to most often?",
+            "What three words describe your personality?",
+            "How to get to Gigamall?",
+            "What do you usually wear when you go out?",
+            "How often do you go grocery shopping?",
+            "What do you usually do when you feel sick?",
+            "Do you prefer eating at home or eating out?",
+            "What household chore do you dislike?",
+            "What's something you bought recently?",
+            "How do you usually spend your weekends?",
+            "What do you do when you can't sleep?",
+            "What's something you're good at?",
+            "What would you like to learn to do in the US?",
+            "What does a typical weekday look like for you?",
+            "What's the busiest part of your day?",
+            "What do you usually do to relax?",
+            "Is there anything you'd like to change about your daily routine?",
+            "What do you think your daily life will be like in America?",
+            "Who are you closest to in your family?",
+            "What is that person like?",
+            "What do you usually do together?",
+            "Do you find it easy to make new friends?",
+            "How would you introduce yourself to a new neighbor?"
+        ];
+
+        let currentIndex = 0;
+
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.85;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function startApp() {
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('mainControls').style.display = 'block';
+            updateProgress();
+            playCurrentQuestion();
+        }
+
+        function playCurrentQuestion() {
+            speak(questions[currentIndex]);
+        }
+
+        function nextQuestion() {
+            currentIndex++;
+            if (currentIndex >= questions.length) {
+                currentIndex = 0;
+            }
+            updateProgress();
+            playCurrentQuestion();
+        }
+
+        function updateProgress() {
+            document.getElementById('progress').innerText = `Câu ${currentIndex + 1} / ${questions.length}`;
+        }
+    </script>
+</body>
+</html>
